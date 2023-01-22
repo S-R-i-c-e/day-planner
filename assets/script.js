@@ -6,8 +6,6 @@ const $timeField = $("#the-time");
 $(document).ready(function () {
     let today = moment().format("dddd DD-MMMM-YYYY");
     $dateField.text(today);
-    // let theTime = moment().format("mm:ss");
-    // $timeField.text(theTime);
 })
 
 // hoursStrings : generator creates strings for each hour between the arguments
@@ -54,13 +52,21 @@ for(let hourString of [...hoursInTheDay]) {
 
 $("li").on("click", "button", function(event) {
     console.log($(event.target).parent("li")[0].id); 
-//    this.textContent="lummy";   
-})
+    savePlan($(event.target).parent("li")[0].id);
+});
 $("li").on("click", "span", function(event) {
     console.log($(event.target).parent("li")[0].id);
-})
+    editPlan($(event.target).parent("li")[0].id);
+});
 $("#string10:00").textContent = "testing 10:00";
 
+function savePlan(hour) {
+    console.log("save " + hour);
+}
+
+function editPlan(hour) {
+    console.log("edit " + hour);  
+}
 // let hourTag = $(hourElementString);
 // $planList.append(hourTag);
 // $planList.append(hourTag);
