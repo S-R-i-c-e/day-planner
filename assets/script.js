@@ -109,14 +109,14 @@ function millisecondsToTheHour(timeString) {
     return MILLISECONDSINANHOUR - milliSecondsPastTheHour;
 }
 
-let chimeDelay =  setTimeout(repeatedChimes(), millisecondsToTheHour(moment().format("mm:ss")));
+const runEveryFullHours = (updateHour) => {
+    setTimeout(() => {
+        updateHour;
+        setInterval(updateHour, Hour);
+    }, firstCall);
+  };
 
-function repeatedChimes() {
-    updateHour(moment());
-    setTimeout(updateHour(moment()), MILLISECONDSINANHOUR);
-}
-
-function updateHour(time) {
+const updateHour = (time) => {
     console.log(time.format("HH:mm:ss"));
 }
 // GENERIC FUNCTIONS
