@@ -1,6 +1,6 @@
 
 const $dateField = $("#todays-date");
-
+const $timeField = $("#the-time");
 
 
 $(document).ready(function () {
@@ -36,42 +36,31 @@ function* hoursStrings(from, to) {
 
 // split hourElement String into three to include id and hour string in iterator
 const hourElementStringPartOne = '<li id="string';  // 'string' pre-fix for hour-wise identifier because id name must start with alpha-char
-const hourElementStringPartTwo = '" class="list-group-item d-flex justify-content-between align-items-center h-100"><span class="h-100 col-1 mx-3">';
-const hourElementStringPartThree = '</span><span class="h-100 col-8 m-1">plan here</span><button class="btn btn-primary" type="submit">Button</button></li>'
+const hourElementStringPartTwo = '" class="list-group-item d-flex justify-content-between align-items-center"><span class="hour mx-3">';
+const hourElementStringPartThree = '</span><span class="hour-plan m-1">plan here</span><button class="btn btn-primary" type="submit">Button</button></li>'
 
 let hoursInTheDay = hoursStrings(9, 17);    // set the hours in a day
 let planList = $("ul");                     // the handle for the list
-for (let hourString of [...hoursInTheDay]) {
-    //    console.log(hourString);                // test
+for(let hourString of [...hoursInTheDay]) {
+//    console.log(hourString);                // test
     let hourElementString = hourElementStringPartOne +
-        hourString +
-        hourElementStringPartTwo +
-        hourString +
-        hourElementStringPartThree;
+                            hourString +
+                            hourElementStringPartTwo +
+                            hourString +
+                            hourElementStringPartThree;
     planList.append($(hourElementString));
 }
 // test write access to elements
 
-$("li").on("click", "button", function (event) {
-    save(trimString($(event.target).parent("li")[0].id));
-    console.log("save " + $(event.target).parent("li")[0].id);  
+$("li").on("click", "button", function(event) {
+    console.log($(event.target).parent("li")[0].id); 
+//    this.textContent="lummy";   
 })
-$("li").on("click", "span", function (event) {
-    edit(trimString($(event.target).parent("li")[0].id));
-    console.log("edit " + $(event.target).parent("li")[0].id);
+$("li").on("click", "span", function(event) {
+    console.log($(event.target).parent("li")[0].id);
 })
+$("#string10:00").textContent = "testing 10:00";
 
-function trimString(hourID) {
-    return hourID.replace(/string/, "");
-}
-function edit(identifier) {
-//    let hour = identifier.replace(/string/, "");
-    console.log("edit hour : " + identifier);
-}
-function save(identifier) {
-//    let hour = identifier.replace(/string/, "");
-    console.log("save hour : " + identifier);
-}
 // let hourTag = $(hourElementString);
 // $planList.append(hourTag);
 // $planList.append(hourTag);
@@ -132,44 +121,3 @@ function repeatedChimes() {
 function updateHour(time) {
     console.log(time.format("HH:mm:ss"));
 }
-
-
-// // not much doing in the HourPlan class
-// class HourPlan {
-//     // 
-//     constructor(hour, todo) {
-//         this.hour = hour;
-//         this.todo = todo;
-//     }
-//     // get hour() {return this.hour;}
-//     // get todo() {return this.todo;}
-//     // set hour(time) {this.hour = time;}
-//     // set todo(doThis) {this.todo = doThis;}
-//     toString() { return this.hour + " & " + this.todo }
-// }
-
-// // entry = new HourPlan("09:00", "what the Hell?");
-// // console.log(entry.toString());
-// // console.log(entry.todo)
-
-// class DayPlan {
-//     constructor() {
-//         this.day = [];
-//         let hoursInTheDay = hoursStrings(9, 17);
-//         for(let hour of [...hoursInTheDay]) {
-//             let hourPlan = new HourPlan(hour, "");
-//             this.day.push(hourPlan);
-//         }
-//     }
-//     get hourPlan(hour) {
-//         for(hourPlan of [...this.day]) {
-
-//         })
-
-//     }
-//     toString() {
-//         this.day.forEach(function(hour)   { hour=>hour.hour + " & " + hour.todo);
-//     }
-// }
-// let today=new DayPlan();
-
