@@ -19,14 +19,14 @@ function planStorage() {
 }
 
 function createPlanStorage() {
-    const PLANPLACEHOLDER = "Please enter your task by clicking this text";
     let hours = hoursStrings(9,17);
     let plan = [];
     for(index in [...hours]) {
-        plan.push(PLANPLACEHOLDER);
+        plan.push("");
     }
     return plan;
 }
+
 function parseHour(hour) {
     return Number(hour.replace(/:00/, ""))-NINEOCLOCK;
 }
@@ -34,17 +34,17 @@ function parseHour(hour) {
     parseHour(hour);
 
  }
-
+// colorHours - makes no sense - recieves the hour in "HH" format
  function colorHours(time) {
-    const thisHour = Number(time)-NINEOCLOCK;
-    const past = "bg-secondary";
+    const thisHour = Number(time)-NINEOCLOCK; // suntract 9 to aligne hours with array indicies starting at 9 o'clock
+    const past = "bg-secondary"; // some bootstarp colors
     const present = "bg-danger";
     const future = "bg-primary"
-    let hours = hoursStrings(9,17);
-    let colorPlan = [];
-    for(let hour of [...hours]) {
-        console.log(parseHour(hour));
-        if(parseHour(hour) < thisHour) {
+    let hours = hoursStrings(9,17); //9-17 hours generator
+    let colorPlan = [];                // array to hold the Bootstrap color strings
+    for(let hour of [...hours]) {      // shuffle throughth the day in your sad way
+        console.log(parseHour(hour));   // assign Bootstrap color strings
+        if(parseHour(hour) < thisHour) { 
             colorPlan.push(past);
         } else {
             if(parseHour(hour) == thisHour) {
@@ -56,16 +56,17 @@ function parseHour(hour) {
     }
     return colorPlan;   
  }
-
+//     const hourElementStringPartFour = '</span><span class="hour-plan m-1">'
+//     const hourElementStringPartFive = '<button class="btn btn-primary" type="submit">Button</button></li>'
 function renderPlan() {
     // strings equating to Bootstrap day-plan list elements
     // split hourElement String into three to include id and hour string in iterator
     const hourElementStringPartOne = '<li id="string';  // 'string' pre-fix for hour-wise identifier because id name must start with alpha-char
     const hourElementStringPartTwo = '" class="list-group-item d-flex justify-content-between align-items-center ';
     const hourElementStringPartThree = '"><span class="hour mx-3">';
-    const hourElementStringPartFour = '</span><span class="hour-plan m-1">'
-    const hourElementStringPartFive = '</span><button class="btn btn-primary" type="submit">Button</button></li>'
-    const hourColors = colorHours("13");
+    const hourElementStringPartFour = '</span><textarea class="form-control" rows="3"></textarea>'
+    const hourElementStringPartFive = '<button class="btn btn-primary" type="submit">Button</button></li>'
+    const hourColors = colorHours(moment().format("HH"));  // check hour color routine here - enter 24 hour clock hour "HH"
 
     let hoursInTheDay = hoursStrings(9, 17);    // set the hours in a day
     for(let hourString of [...hoursInTheDay]) {
@@ -76,9 +77,10 @@ function renderPlan() {
                                 hourElementStringPartThree +
                                 hourString +
                                 hourElementStringPartFour +
-                                planArray[parseHour(hourString)] +
+//                                planArray[parseHour(hourString)] +
                                 hourElementStringPartFive;
         planList.append($(hourElementString));
+
     }
 }
 
