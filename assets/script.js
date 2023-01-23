@@ -1,6 +1,9 @@
 // CONSTANT AND VARIABLE DECLARATIONS
 // name the html element handles
 const $dateField = $("#todays-date");
+const planList = $("ul");  
+
+const NINEOCLOCK = 9; //start of the working day
 
 // Create the page
 let today = moment().format("dddd DD-MMMM-YYYY");
@@ -8,6 +11,8 @@ $dateField.text(today);
 planStorage();
 renderPlan();
 
+
+// plan storage an array of strings, one for each hour of the plan, in hour order
 function planStorage() {
     planArray = retrieve("day-plan") || createPlanStorage();
     store("day-plan", planArray);
@@ -23,36 +28,62 @@ function createPlanStorage() {
     return plan;
 }
 function parseHour(hour) {
-    const NINEOCLOCK = 9;
     return Number(hour.replace(/:00/, ""))-NINEOCLOCK;
 }
-console.log(parseHour("10:00"));
  function retriveDayPlan(hour) {
     parseHour(hour);
 
+ }
+
+ function colorHours(time) {
+    const thisHour = Number(time)-NINEOCLOCK;
+    const past = "bg-secondary";
+    const present = "bg-danger";
+    const future = "bg-primary"
+    let hours = hoursStrings(9,17);
+    let colorPlan = [];
+    for(let hour of [...hours]) {
+        console.log(parseHour(hour));
+        if(parseHour(hour) < thisHour) {
+            colorPlan.push(past);
+        } else {
+            if(parseHour(hour) == thisHour) {
+                colorPlan.push(present);
+            } else {
+                colorPlan.push(future);
+            }
+        }
+    }
+    return colorPlan;   
  }
 
 function renderPlan() {
     // strings equating to Bootstrap day-plan list elements
     // split hourElement String into three to include id and hour string in iterator
     const hourElementStringPartOne = '<li id="string';  // 'string' pre-fix for hour-wise identifier because id name must start with alpha-char
-    const hourElementStringPartTwo = '" class="list-group-item d-flex justify-content-between align-items-center"><span class="hour mx-3">';
-    const hourElementStringPartThree = '</span><span class="hour-plan m-1">'
-    const hourElementStringPartFour = '</span><button class="btn btn-primary" type="submit">Button</button></li>'
+    const hourElementStringPartTwo = '" class="list-group-item d-flex justify-content-between align-items-center ';
+    const hourElementStringPartThree = '"><span class="hour mx-3">';
+    const hourElementStringPartFour = '</span><span class="hour-plan m-1">'
+    const hourElementStringPartFive = '</span><button class="btn btn-primary" type="submit">Button</button></li>'
+    const hourColors = colorHours("13");
 
     let hoursInTheDay = hoursStrings(9, 17);    // set the hours in a day
-    let planList = $("ul");                     // the handle for the list
     for(let hourString of [...hoursInTheDay]) {
-    //    console.log(hourString);                // test
         let hourElementString = hourElementStringPartOne +
                                 hourString +
                                 hourElementStringPartTwo +
-                                hourString +
+                                hourColors[parseHour(hourString)] +
                                 hourElementStringPartThree +
+                                hourString +
+                                hourElementStringPartFour +
                                 planArray[parseHour(hourString)] +
-                                hourElementStringPartFour;
+                                hourElementStringPartFive;
         planList.append($(hourElementString));
     }
+}
+
+function clearPlan() {
+    $("li").detach();
 }
 
 // EVENT LISTENERS
